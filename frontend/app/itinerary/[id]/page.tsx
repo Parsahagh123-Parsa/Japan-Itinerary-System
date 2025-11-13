@@ -19,6 +19,9 @@ import ItineraryTags from '../../../components/Itinerary/ItineraryTags'
 import LocationDetector from '../../../components/Location/LocationDetector'
 import NearbyPlaces from '../../../components/Location/NearbyPlaces'
 import CityInsights from '../../../components/Dashboard/CityInsights'
+import ActivityRecommendations from '../../../components/Recommendations/ActivityRecommendations'
+import ItineraryStats from '../../../components/Itinerary/ItineraryStats'
+import TimeOptimizer from '../../../components/Itinerary/TimeOptimizer'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -211,6 +214,14 @@ export default function ItineraryDetailPage() {
 
           <div className="lg:col-span-1">
             <div className="sticky top-4 space-y-6">
+              <ItineraryStats itinerary={itinerary} />
+              <TimeOptimizer
+                itinerary={itinerary}
+                onOptimize={(optimized) => {
+                  // In production, this would update the itinerary
+                  console.log('Optimized itinerary:', optimized)
+                }}
+              />
               {detectedLocation && (
                 <NearbyPlaces
                   coordinates={detectedLocation.coordinates}
@@ -222,7 +233,17 @@ export default function ItineraryDetailPage() {
                 />
               )}
               {itinerary.cities.length > 0 && (
-                <CityInsights city={itinerary.cities[0]} />
+                <>
+                  <ActivityRecommendations
+                    city={itinerary.cities[0]}
+                    interests={itinerary.tags}
+                    onAddToItinerary={(activity) => {
+                      // In production, this would add to itinerary
+                      console.log('Adding recommended activity:', activity)
+                    }}
+                  />
+                  <CityInsights city={itinerary.cities[0]} />
+                </>
               )}
               <CostBreakdown itinerary={itinerary} />
               <ExpenseTracker itineraryId={itinerary.id} />
