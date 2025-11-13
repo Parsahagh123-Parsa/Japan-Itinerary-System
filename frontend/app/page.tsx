@@ -9,6 +9,8 @@ import Button from '../components/UI/Button'
 import Input from '../components/UI/Input'
 import { ItineraryCardSkeleton } from '../components/UI/LoadingSkeleton'
 import { useToast } from '../components/UI/ToastContainer'
+import ConfirmDialog from '../components/UI/ConfirmDialog'
+import EmptyState from '../components/UI/EmptyState'
 import QuickActions from '../components/Dashboard/QuickActions'
 import StatsCard from '../components/Dashboard/StatsCard'
 import { deleteItinerary } from '../services/itinerary'
@@ -20,17 +22,39 @@ export default function Home() {
   const { itineraries, loading, error, reload } = useUserItineraries()
   const [searchQuery, setSearchQuery] = useState('')
   const [filterCity, setFilterCity] = useState('')
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    isOpen: boolean
+    itineraryId: string | null
+    itineraryTitle: string
+  }>({
+    isOpen: false,
+    itineraryId: null,
+    itineraryTitle: '',
+  })
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this itinerary?')) {
-      try {
-        await deleteItinerary(id)
-        showToast('Itinerary deleted successfully', 'success')
-        reload()
-      } catch (err: any) {
-        showToast(err.message || 'Failed to delete itinerary', 'error')
-      }
+  const handleDeleteClick = (id: string, title: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      itineraryId: id,
+      itineraryTitle: title,
+    })
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirm.itineraryId) return
+
+    try {
+      await deleteItinerary(deleteConfirm.itineraryId)
+      showToast('Itinerary deleted successfully', 'success')
+      reload()
+      setDeleteConfirm({ isOpen: false, itineraryId: null, itineraryTitle: '' })
+    } catch (err: any) {
+      showToast(err.message || 'Failed to delete itinerary', 'error')
     }
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirm({ isOpen: false, itineraryId: null, itineraryTitle: '' })
   }
 
   // Filter and search itineraries
@@ -141,48 +165,52 @@ export default function Home() {
         {!loading && !error && (
           <>
             {itineraries.length === 0 ? (
-              <div className="bg-white rounded-card shadow-sm p-12 text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                  No itineraries yet
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Create your first AI-powered itinerary to get started
-                </p>
-                <Link href="/itinerary/create">
-                  <Button size="lg">Create Your First Itinerary</Button>
-                </Link>
-              </div>
+              <EmptyState
+                icon="🗾"
+                title="No itineraries yet"
+                description="Create your first AI-powered itinerary to get started planning your Japan adventure"
+                action={{
+                  label: 'Create Your First Itinerary',
+                  onClick: () => router.push('/itinerary/create'),
+                }}
+              />
             ) : filteredItineraries.length === 0 ? (
-              <div className="bg-white rounded-card shadow-sm p-12 text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                  No matching itineraries
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Try adjusting your search or filter criteria
-                </p>
-                <Button
-                  variant="outline"
-                  onClick={() => {
+              <EmptyState
+                icon="🔍"
+                title="No matching itineraries"
+                description="Try adjusting your search or filter criteria to find what you're looking for"
+                action={{
+                  label: 'Clear Filters',
+                  onClick: () => {
                     setSearchQuery('')
                     setFilterCity('')
-                  }}
-                >
-                  Clear Filters
-                </Button>
-              </div>
+                  },
+                }}
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredItineraries.map((itinerary) => (
                   <ItineraryCard
                     key={itinerary.id}
                     itinerary={itinerary}
-                    onDelete={handleDelete}
+                    onDelete={(id) => handleDeleteClick(id, itinerary.title)}
                   />
                 ))}
               </div>
             )}
           </>
         )}
+
+        <ConfirmDialog
+          isOpen={deleteConfirm.isOpen}
+          title="Delete Itinerary"
+          message={`Are you sure you want to delete "${deleteConfirm.itineraryTitle}"? This action cannot be undone.`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          variant="danger"
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteCancel}
+        />
       </div>
     </main>
   )

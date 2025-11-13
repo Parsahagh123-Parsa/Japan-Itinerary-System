@@ -8,6 +8,7 @@ import bookingRoutes from './routes/bookings'
 import mapRoutes from './routes/maps'
 import transitRoutes from './routes/transit'
 import translateRoutes from './routes/translate'
+import weatherRoutes from './routes/weather'
 
 // Load environment variables
 dotenv.config()
@@ -53,6 +54,7 @@ app.use('/api/bookings', bookingRoutes)
 app.use('/api/maps', mapRoutes)
 app.use('/api/transit', transitRoutes)
 app.use('/api/translate', translateRoutes)
+app.use('/api/weather', weatherRoutes)
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
