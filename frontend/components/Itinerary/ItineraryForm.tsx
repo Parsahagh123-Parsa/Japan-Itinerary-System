@@ -20,7 +20,11 @@ const INTERESTS = [
   'temples',
 ]
 
-export default function ItineraryForm() {
+interface ItineraryFormProps {
+  initialData?: Partial<ItineraryRequest> | any
+}
+
+export default function ItineraryForm({ initialData }: ItineraryFormProps = {}) {
   const router = useRouter()
   const { createItinerary, loading, error } = useItinerary()
   
