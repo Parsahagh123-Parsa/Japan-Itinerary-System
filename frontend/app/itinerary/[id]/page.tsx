@@ -29,6 +29,10 @@ import OnsenGuide from '../../../components/Japan/OnsenGuide'
 import FoodSpecialties from '../../../components/Japan/FoodSpecialties'
 import AnimeCulture from '../../../components/Japan/AnimeCulture'
 import CulturalEtiquette from '../../../components/Japan/CulturalEtiquette'
+import TransportationGuide from '../../../components/Japan/TransportationGuide'
+import EmergencyInfo from '../../../components/Japan/EmergencyInfo'
+import LanguageHelper from '../../../components/Japan/LanguageHelper'
+import RyokanGuide from '../../../components/Japan/RyokanGuide'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -288,6 +292,15 @@ export default function ItineraryDetailPage() {
                 </>
               )}
               <CulturalEtiquette />
+              <LanguageHelper />
+              <TransportationGuide />
+              <RyokanGuide
+                city={itinerary.cities[0]}
+                onAddToItinerary={(activity) => {
+                  console.log('Adding ryokan:', activity)
+                }}
+              />
+              <EmergencyInfo />
               <CostBreakdown itinerary={itinerary} />
               <ExpenseTracker itineraryId={itinerary.id} />
             </div>
