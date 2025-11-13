@@ -1,0 +1,27 @@
+context:
+  include:
+    - CODEBASE_DOCUMENTATION.md
+    - PROGRESS_SUMMARY.md
+    - frontend/
+    - backend/
+    - docs/
+  auto_refresh: true
+
+rules:
+  - Always adhere to CODEBASE_DOCUMENTATION.md architecture.
+  - Write clean, typed (TypeScript) and modular code.
+  - Comment all logic clearly.
+  - Mirror backend APIs with frontend services under /frontend/services/.
+  - Summarize all commits in PROGRESS_SUMMARY.md.
+  - Never change structure unless instructed.
+  - Follow minimalist, Apple-inspired UI design.
+  - Use consistent environment variable management (.env.local / .env.production).
+  - Always use TypeScript with strict mode enabled.
+  - Implement proper error handling and validation.
+  - Use Zod for runtime type validation.
+  - Follow RESTful API conventions.
+  - Keep components small and focused.
+  - Use custom hooks for reusable logic.
+  - Document all API endpoints.
+  - Write self-documenting code with clear variable names.
+
