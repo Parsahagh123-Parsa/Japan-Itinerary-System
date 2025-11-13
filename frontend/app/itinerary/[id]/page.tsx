@@ -33,6 +33,9 @@ import TransportationGuide from '../../../components/Japan/TransportationGuide'
 import EmergencyInfo from '../../../components/Japan/EmergencyInfo'
 import LanguageHelper from '../../../components/Japan/LanguageHelper'
 import RyokanGuide from '../../../components/Japan/RyokanGuide'
+import PhotographySpots from '../../../components/Japan/PhotographySpots'
+import ShoppingGuide from '../../../components/Japan/ShoppingGuide'
+import NightlifeGuide from '../../../components/Japan/NightlifeGuide'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -279,6 +282,24 @@ export default function ItineraryDetailPage() {
                     city={itinerary.cities[0]}
                     onAddToItinerary={(activity) => {
                       console.log('Adding anime spot:', activity)
+                    }}
+                  />
+                  <PhotographySpots
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding photo spot:', activity)
+                    }}
+                  />
+                  <ShoppingGuide
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding shopping spot:', activity)
+                    }}
+                  />
+                  <NightlifeGuide
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding nightlife spot:', activity)
                     }}
                   />
                   <ActivityRecommendations
