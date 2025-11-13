@@ -4,7 +4,10 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useItinerary } from '../../../hooks/useItinerary'
 import DaySchedule from '../../../components/Itinerary/DaySchedule'
+import ShareItinerary from '../../../components/Itinerary/ShareItinerary'
+import ExportItinerary from '../../../components/Itinerary/ExportItinerary'
 import Button from '../../../components/UI/Button'
+import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
 
 export default function ItineraryDetailPage() {
@@ -16,10 +19,13 @@ export default function ItineraryDetailPage() {
     return (
       <main className="min-h-screen p-8 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading itinerary...</p>
+          <div className="mb-6">
+            <div className="h-10 bg-gray-200 rounded w-48 mb-4 animate-pulse"></div>
+            <div className="h-8 bg-gray-200 rounded w-64 mb-2 animate-pulse"></div>
+            <div className="h-4 bg-gray-200 rounded w-32 animate-pulse"></div>
           </div>
+          <DayScheduleSkeleton />
+          <DayScheduleSkeleton />
         </div>
       </main>
     )
@@ -65,7 +71,9 @@ export default function ItineraryDetailPage() {
                 </p>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              <ShareItinerary itineraryId={itinerary.id} title={itinerary.title} />
+              <ExportItinerary itinerary={itinerary} />
               {itinerary.days.length > 0 && itinerary.days[0].activities.length > 0 && (
                 <Link
                   href={`/map?from=${formatCoordinates(
