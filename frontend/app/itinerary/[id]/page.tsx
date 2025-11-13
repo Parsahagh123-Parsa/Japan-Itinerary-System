@@ -13,6 +13,8 @@ import ItineraryAdjustModal from '../../../components/Itinerary/ItineraryAdjustM
 import TimelineView from '../../../components/Itinerary/TimelineView'
 import MapView from '../../../components/Itinerary/MapView'
 import ExpenseTracker from '../../../components/Expense/ExpenseTracker'
+import CalendarExport from '../../../components/Calendar/CalendarExport'
+import CollaborateModal from '../../../components/Itinerary/CollaborateModal'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -24,6 +26,7 @@ export default function ItineraryDetailPage() {
   const router = useRouter()
   const { itinerary, loading, error, reload } = useItinerary(params.id as string)
   const [showAdjustModal, setShowAdjustModal] = useState(false)
+  const [showCollaborateModal, setShowCollaborateModal] = useState(false)
   const [viewMode, setViewMode] = useState<ViewMode>('schedule')
 
   if (loading) {
@@ -90,6 +93,14 @@ export default function ItineraryDetailPage() {
                 onClick={() => setShowAdjustModal(true)}
               >
                 🔄 Adjust Plan
+              </Button>
+              <CalendarExport itinerary={itinerary} />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowCollaborateModal(true)}
+              >
+                👥 Collaborate
               </Button>
               <ShareItinerary itineraryId={itinerary.id} title={itinerary.title} />
               <ExportItinerary itinerary={itinerary} />
@@ -188,6 +199,13 @@ export default function ItineraryDetailPage() {
               reload?.()
               setShowAdjustModal(false)
             }}
+          />
+        )}
+
+        {showCollaborateModal && (
+          <CollaborateModal
+            itineraryId={itinerary.id}
+            onClose={() => setShowCollaborateModal(false)}
           />
         )}
       </div>
