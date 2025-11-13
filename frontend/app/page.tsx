@@ -5,19 +5,22 @@ import Link from 'next/link'
 import { useUserItineraries } from '../hooks/useItinerary'
 import ItineraryCard from '../components/Itinerary/ItineraryCard'
 import Button from '../components/UI/Button'
+import { useToast } from '../components/UI/ToastContainer'
 import { deleteItinerary } from '../services/itinerary'
 
 export default function Home() {
   const router = useRouter()
+  const { showToast } = useToast()
   const { itineraries, loading, error, reload } = useUserItineraries()
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this itinerary?')) {
       try {
         await deleteItinerary(id)
+        showToast('Itinerary deleted successfully', 'success')
         reload()
-      } catch (err) {
-        alert('Failed to delete itinerary')
+      } catch (err: any) {
+        showToast(err.message || 'Failed to delete itinerary', 'error')
       }
     }
   }

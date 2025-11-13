@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react'
 import Button from '../UI/Button'
 import Input from '../UI/Input'
+import { useToast } from '../UI/ToastContainer'
 import type { Activity } from '../../services/itinerary'
 import { bookHotel, bookRestaurant, bookActivity } from '../../services/bookings'
 
@@ -17,6 +18,7 @@ export default function BookingModal({
   onClose,
   onSuccess,
 }: BookingModalProps) {
+  const { showToast } = useToast()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
@@ -59,10 +61,13 @@ export default function BookingModal({
         await bookActivity(activityId, bookingDetails)
       }
 
+      showToast('Booking created successfully!', 'success')
       onSuccess()
       onClose()
     } catch (err: any) {
-      setError(err.message || 'Failed to create booking')
+      const errorMessage = err.message || 'Failed to create booking'
+      setError(errorMessage)
+      showToast(errorMessage, 'error')
     } finally {
       setLoading(false)
     }
