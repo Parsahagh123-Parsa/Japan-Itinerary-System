@@ -12,14 +12,22 @@ export const api = axios.create({
 
 // Request interceptor to add auth token
 api.interceptors.request.use(
-  (config) => {
-    // Get token from Supabase session or localStorage
-    const token = typeof window !== 'undefined' 
-      ? localStorage.getItem('supabase.auth.token')
-      : null
-    
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+  async (config) => {
+    // Get token from Supabase session
+    if (typeof window !== 'undefined') {
+      const { data: { session } } = await import('../lib/supabase').then(m => m.supabase.auth.getSession())
+      
+      if (session?.access_token) {
+        config.headers.Authorization = `Bearer ${session.access_token}`
+        // Also store in localStorage for quick access
+        localStorage.setItem('supabase.auth.token', session.access_token)
+      } else {
+        // Fallback to localStorage if session not available
+        const token = localStorage.getItem('supabase.auth.token')
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`
+        }
+      }
     }
     
     return config

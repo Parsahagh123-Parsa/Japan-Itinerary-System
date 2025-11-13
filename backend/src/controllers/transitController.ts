@@ -1,6 +1,8 @@
 import { Response } from 'express'
 import { AuthenticatedRequest } from '../middlewares/auth'
 import { transitService } from '../services/transitService'
+import { validate, transitRequestSchema } from '../utils/validation'
+import { ValidationError } from '../utils/errors'
 
 export const transitController = {
   /**
@@ -8,24 +10,26 @@ export const transitController = {
    */
   async getSchedule(req: AuthenticatedRequest, res: Response) {
     try {
-      const { from, to, date, time } = req.query
-
-      if (!from || !to || !date) {
-        return res.status(400).json({
-          error: 'Missing required parameters: from, to, date',
-        })
-      }
+      const transitData = validate(transitRequestSchema, req.query)
 
       const routes = await transitService.getSchedule(
-        from as string,
-        to as string,
-        date as string,
-        time as string | undefined
+        transitData.from,
+        transitData.to,
+        transitData.date,
+        transitData.time
       )
 
       res.json({ routes })
     } catch (error: any) {
       console.error('Error fetching transit schedule:', error)
+      
+      if (error instanceof ValidationError) {
+        return res.status(400).json({
+          error: 'Validation error',
+          message: error.message,
+        })
+      }
+      
       res.status(500).json({
         error: 'Failed to fetch transit schedule',
         message: error.message,
