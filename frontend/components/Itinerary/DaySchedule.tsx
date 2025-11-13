@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import ActivityItem from './ActivityItem'
 import BookingModal from '../Booking/BookingModal'
 import WeatherWidget from '../Weather/WeatherWidget'
+import QuickAddActivity from './QuickAddActivity'
 import type { DaySchedule as DayScheduleType, Activity } from '../../services/itinerary'
 
 interface DayScheduleProps {
@@ -67,6 +68,15 @@ export default function DaySchedule({ day, onBookingSuccess }: DayScheduleProps)
           />
         ))}
       </div>
+
+      <QuickAddActivity
+        day={day.day}
+        date={day.date}
+        onAdd={(activity) => {
+          // In production, this would add the activity to the itinerary
+          console.log('Activity added:', activity)
+        }}
+      />
 
       {selectedActivity && (
         <BookingModal

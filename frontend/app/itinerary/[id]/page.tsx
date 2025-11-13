@@ -16,6 +16,9 @@ import ExpenseTracker from '../../../components/Expense/ExpenseTracker'
 import CalendarExport from '../../../components/Calendar/CalendarExport'
 import CollaborateModal from '../../../components/Itinerary/CollaborateModal'
 import ItineraryTags from '../../../components/Itinerary/ItineraryTags'
+import LocationDetector from '../../../components/Location/LocationDetector'
+import NearbyPlaces from '../../../components/Location/NearbyPlaces'
+import CityInsights from '../../../components/Dashboard/CityInsights'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -29,6 +32,10 @@ export default function ItineraryDetailPage() {
   const [showAdjustModal, setShowAdjustModal] = useState(false)
   const [showCollaborateModal, setShowCollaborateModal] = useState(false)
   const [viewMode, setViewMode] = useState<ViewMode>('schedule')
+  const [detectedLocation, setDetectedLocation] = useState<{
+    city: string
+    coordinates: [number, number]
+  } | null>(null)
 
   if (loading) {
     return (
@@ -100,6 +107,11 @@ export default function ItineraryDetailPage() {
               </div>
             </div>
             <div className="flex gap-2 flex-wrap items-center">
+              <LocationDetector
+                onLocationDetected={(city, coordinates) => {
+                  setDetectedLocation({ city, coordinates })
+                }}
+              />
               <FavoriteButton itineraryId={itinerary.id} />
               <Button
                 variant="outline"
@@ -196,9 +208,22 @@ export default function ItineraryDetailPage() {
               <MapView itinerary={itinerary} />
             )}
           </div>
-          
+
           <div className="lg:col-span-1">
             <div className="sticky top-4 space-y-6">
+              {detectedLocation && (
+                <NearbyPlaces
+                  coordinates={detectedLocation.coordinates}
+                  city={detectedLocation.city}
+                  onAddToItinerary={(activity) => {
+                    // In production, this would add to itinerary
+                    console.log('Adding activity:', activity)
+                  }}
+                />
+              )}
+              {itinerary.cities.length > 0 && (
+                <CityInsights city={itinerary.cities[0]} />
+              )}
               <CostBreakdown itinerary={itinerary} />
               <ExpenseTracker itineraryId={itinerary.id} />
             </div>
