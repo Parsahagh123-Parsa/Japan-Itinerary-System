@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { getUserBookings, cancelBooking } from '../../services/bookings'
 import BookingCard from '../../components/Booking/BookingCard'
 import Button from '../../components/UI/Button'
+import EmptyState from '../../components/UI/EmptyState'
 import type { Booking } from '../../services/bookings'
 
 export default function BookingsPage() {
@@ -53,7 +55,12 @@ export default function BookingsPage() {
   return (
     <main className="min-h-screen p-8 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">My Bookings</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-bold">My Bookings</h1>
+          <Link href="/bookings/create">
+            <Button>Create New Booking</Button>
+          </Link>
+        </div>
 
         {loading && (
           <div className="text-center py-12">
@@ -102,16 +109,27 @@ export default function BookingsPage() {
             </div>
 
             {filteredBookings[activeFilter].length === 0 ? (
-              <div className="bg-white rounded-card shadow-sm p-12 text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-                  No bookings found
-                </h2>
-                <p className="text-gray-600">
-                  {activeFilter === 'all'
-                    ? "You haven't made any bookings yet"
-                    : `No ${activeFilter} bookings`}
-                </p>
-              </div>
+              <EmptyState
+                icon="📅"
+                title={
+                  activeFilter === 'all'
+                    ? "No bookings yet"
+                    : `No ${activeFilter} bookings`
+                }
+                description={
+                  activeFilter === 'all'
+                    ? "Start booking hotels, restaurants, and activities for your trip"
+                    : `You don't have any ${activeFilter} bookings at the moment`
+                }
+                action={
+                  activeFilter === 'all'
+                    ? {
+                        label: 'Create Booking',
+                        onClick: () => window.location.href = '/bookings/create',
+                      }
+                    : undefined
+                }
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredBookings[activeFilter].map((booking) => (
