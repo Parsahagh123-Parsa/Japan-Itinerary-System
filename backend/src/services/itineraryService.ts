@@ -211,5 +211,42 @@ export const itineraryService = {
       throw new Error(`Failed to delete itinerary: ${error.message}`)
     }
   },
+
+  /**
+   * Get user's itinerary statistics
+   */
+  async getStatistics(userId: string) {
+    const { data: itineraries, error } = await supabase
+      .from('itineraries')
+      .select('*')
+      .eq('user_id', userId)
+
+    if (error) {
+      throw new Error(`Failed to fetch statistics: ${error.message}`)
+    }
+
+    const totalItineraries = itineraries?.length || 0
+    let totalDays = 0
+    let totalCost = 0
+    const cities = new Set<string>()
+
+    itineraries?.forEach((itinerary) => {
+      const start = new Date(itinerary.start_date)
+      const end = new Date(itinerary.end_date)
+      const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1
+      totalDays += days
+      totalCost += itinerary.total_cost || 0
+      itinerary.cities?.forEach((city: string) => cities.add(city))
+    })
+
+    return {
+      totalItineraries,
+      totalDays,
+      totalCost,
+      uniqueCities: cities.size,
+      averageDaysPerItinerary: totalItineraries > 0 ? Math.round(totalDays / totalItineraries) : 0,
+      averageCostPerItinerary: totalItineraries > 0 ? Math.round(totalCost / totalItineraries) : 0,
+    }
+  },
 }
 

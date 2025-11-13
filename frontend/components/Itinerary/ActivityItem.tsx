@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Button from '../UI/Button'
+import ActivityNotes from './ActivityNotes'
 import { formatCoordinates } from '../../services/maps'
 import type { Activity } from '../../services/itinerary'
 
@@ -13,6 +14,15 @@ interface ActivityItemProps {
 
 export default function ActivityItem({ activity, onBook }: ActivityItemProps) {
   const [showDetails, setShowDetails] = useState(false)
+  const [savedNotes, setSavedNotes] = useState<string>('')
+
+  useEffect(() => {
+    // Load saved notes from localStorage
+    const notes = localStorage.getItem(`activity-notes-${(activity as any).id || activity.name}`)
+    if (notes) {
+      setSavedNotes(notes)
+    }
+  }, [activity])
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -83,14 +93,23 @@ export default function ActivityItem({ activity, onBook }: ActivityItemProps) {
       </div>
 
       {showDetails && (
-        <div className="mt-3 pt-3 border-t border-gray-200">
-          <p className="text-xs text-gray-600 mb-1">
-            <span className="font-medium">Address:</span> {activity.location.address}
-          </p>
-          <p className="text-xs text-gray-600">
-            <span className="font-medium">Coordinates:</span>{' '}
-            {activity.location.coordinates[0]}, {activity.location.coordinates[1]}
-          </p>
+        <div className="mt-3 pt-3 border-t border-gray-200 space-y-3">
+          <div>
+            <p className="text-xs text-gray-600 mb-1">
+              <span className="font-medium">Address:</span> {activity.location.address}
+            </p>
+            <p className="text-xs text-gray-600">
+              <span className="font-medium">Coordinates:</span>{' '}
+              {activity.location.coordinates[0]}, {activity.location.coordinates[1]}
+            </p>
+          </div>
+          <div>
+            <ActivityNotes
+              activityId={(activity as any).id || activity.name}
+              initialNotes={savedNotes}
+              onSave={(notes) => setSavedNotes(notes)}
+            />
+          </div>
         </div>
       )}
     </div>

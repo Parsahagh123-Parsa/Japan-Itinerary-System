@@ -22,5 +22,8 @@ router.get('/', itineraryController.getUserItineraries)
 // Delete itinerary
 router.delete('/:id', itineraryController.delete)
 
+// Get statistics
+router.get('/statistics', itineraryController.getStatistics)
+
 export default router
 

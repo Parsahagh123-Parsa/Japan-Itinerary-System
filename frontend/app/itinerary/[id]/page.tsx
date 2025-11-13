@@ -7,6 +7,7 @@ import DaySchedule from '../../../components/Itinerary/DaySchedule'
 import ShareItinerary from '../../../components/Itinerary/ShareItinerary'
 import ExportItinerary from '../../../components/Itinerary/ExportItinerary'
 import FavoriteButton from '../../../components/Itinerary/FavoriteButton'
+import CostBreakdown from '../../../components/Itinerary/CostBreakdown'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -95,16 +96,23 @@ export default function ItineraryDetailPage() {
           </div>
         </div>
 
-        <div className="space-y-6">
-          {itinerary.days.map((day) => (
-            <DaySchedule
-              key={day.day}
-              day={day}
-              onBookingSuccess={() => {
-                // Could show a success message or refresh data
-              }}
-            />
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            {itinerary.days.map((day) => (
+              <DaySchedule
+                key={day.day}
+                day={day}
+                onBookingSuccess={() => {
+                  // Could show a success message or refresh data
+                }}
+              />
+            ))}
+          </div>
+          <div className="lg:col-span-1">
+            <div className="sticky top-4">
+              <CostBreakdown itinerary={itinerary} />
+            </div>
+          </div>
         </div>
       </div>
     </main>
