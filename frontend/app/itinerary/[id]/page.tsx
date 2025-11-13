@@ -22,6 +22,13 @@ import CityInsights from '../../../components/Dashboard/CityInsights'
 import ActivityRecommendations from '../../../components/Recommendations/ActivityRecommendations'
 import ItineraryStats from '../../../components/Itinerary/ItineraryStats'
 import TimeOptimizer from '../../../components/Itinerary/TimeOptimizer'
+import HiddenGems from '../../../components/Japan/HiddenGems'
+import CulturalExperiences from '../../../components/Japan/CulturalExperiences'
+import SeasonalEvents from '../../../components/Japan/SeasonalEvents'
+import OnsenGuide from '../../../components/Japan/OnsenGuide'
+import FoodSpecialties from '../../../components/Japan/FoodSpecialties'
+import AnimeCulture from '../../../components/Japan/AnimeCulture'
+import CulturalEtiquette from '../../../components/Japan/CulturalEtiquette'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -234,17 +241,53 @@ export default function ItineraryDetailPage() {
               )}
               {itinerary.cities.length > 0 && (
                 <>
+                  <HiddenGems
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding hidden gem:', activity)
+                    }}
+                  />
+                  <CulturalExperiences
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding cultural experience:', activity)
+                    }}
+                  />
+                  <SeasonalEvents
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding seasonal event:', activity)
+                    }}
+                  />
+                  <OnsenGuide
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding onsen:', activity)
+                    }}
+                  />
+                  <FoodSpecialties
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding food specialty:', activity)
+                    }}
+                  />
+                  <AnimeCulture
+                    city={itinerary.cities[0]}
+                    onAddToItinerary={(activity) => {
+                      console.log('Adding anime spot:', activity)
+                    }}
+                  />
                   <ActivityRecommendations
                     city={itinerary.cities[0]}
                     interests={itinerary.tags}
                     onAddToItinerary={(activity) => {
-                      // In production, this would add to itinerary
                       console.log('Adding recommended activity:', activity)
                     }}
                   />
                   <CityInsights city={itinerary.cities[0]} />
                 </>
               )}
+              <CulturalEtiquette />
               <CostBreakdown itinerary={itinerary} />
               <ExpenseTracker itineraryId={itinerary.id} />
             </div>
