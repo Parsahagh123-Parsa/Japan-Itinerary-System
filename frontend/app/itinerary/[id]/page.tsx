@@ -1,24 +1,29 @@
 'use client'
 
+import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useItinerary } from '../../../hooks/useItinerary'
 import DaySchedule from '../../../components/Itinerary/DaySchedule'
 import ShareItinerary from '../../../components/Itinerary/ShareItinerary'
 import ExportItinerary from '../../../components/Itinerary/ExportItinerary'
-import { useState } from 'react'
 import FavoriteButton from '../../../components/Itinerary/FavoriteButton'
 import CostBreakdown from '../../../components/Itinerary/CostBreakdown'
 import ItineraryAdjustModal from '../../../components/Itinerary/ItineraryAdjustModal'
+import TimelineView from '../../../components/Itinerary/TimelineView'
+import MapView from '../../../components/Itinerary/MapView'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
+
+type ViewMode = 'schedule' | 'timeline' | 'map'
 
 export default function ItineraryDetailPage() {
   const params = useParams()
   const router = useRouter()
   const { itinerary, loading, error, reload } = useItinerary(params.id as string)
   const [showAdjustModal, setShowAdjustModal] = useState(false)
+  const [viewMode, setViewMode] = useState<ViewMode>('schedule')
 
   if (loading) {
     return (
@@ -106,20 +111,68 @@ export default function ItineraryDetailPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            {itinerary.days.map((day) => (
-              <DaySchedule
-                key={day.day}
-                day={day}
-                onBookingSuccess={() => {
-                  // Could show a success message or refresh data
-                }}
-              />
-            ))}
+        <div className="mb-6">
+          <div className="flex gap-2 border-b border-gray-200">
+            <button
+              onClick={() => setViewMode('schedule')}
+              className={`px-4 py-2 font-medium transition-colors ${
+                viewMode === 'schedule'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Schedule
+            </button>
+            <button
+              onClick={() => setViewMode('timeline')}
+              className={`px-4 py-2 font-medium transition-colors ${
+                viewMode === 'timeline'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Timeline
+            </button>
+            <button
+              onClick={() => setViewMode('map')}
+              className={`px-4 py-2 font-medium transition-colors ${
+                viewMode === 'map'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Map
+            </button>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            {viewMode === 'schedule' && (
+              <div className="space-y-6">
+                {itinerary.days.map((day) => (
+                  <DaySchedule
+                    key={day.day}
+                    day={day}
+                    onBookingSuccess={() => {
+                      // Could show a success message or refresh data
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+            
+            {viewMode === 'timeline' && (
+              <TimelineView itinerary={itinerary} />
+            )}
+            
+            {viewMode === 'map' && (
+              <MapView itinerary={itinerary} />
+            )}
+          </div>
+          
           <div className="lg:col-span-1">
-            <div className="sticky top-4">
+            <div className="sticky top-4 space-y-6">
               <CostBreakdown itinerary={itinerary} />
             </div>
           </div>
