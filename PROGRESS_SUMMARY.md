@@ -128,4 +128,8 @@
 - ✅ Activity recommendations engine
 - ✅ Itinerary statistics and analytics
 - ✅ Time optimization for efficient routing
+- ✅ Transportation passes and guides (JR Pass, IC cards, regional passes)
+- ✅ Emergency information and contacts
+- ✅ Essential Japanese language helper with pronunciation
+- ✅ Ryokan (traditional inn) guide and booking information
 
