@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '../../lib/supabase'
 import Button from '../UI/Button'
+import NotificationCenter from '../Notifications/NotificationCenter'
 
 export default function Header() {
   const router = useRouter()
@@ -69,6 +70,7 @@ export default function Header() {
                 <Link href="/profile">
                   <Button variant="ghost">Profile</Button>
                 </Link>
+                <NotificationCenter />
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-600">{user.email}</span>
                   <Button variant="ghost" size="sm" onClick={handleLogout}>
