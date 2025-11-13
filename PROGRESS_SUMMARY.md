@@ -105,4 +105,8 @@
 - ✅ Expense tracking component
 - ✅ Notification center with bell icon
 - ✅ Enhanced itinerary creation with template support
+- ✅ Calendar export (.ics format) for itinerary events
+- ✅ Image upload component for places/activities
+- ✅ Collaboration modal for sharing itineraries
+- ✅ Enhanced sharing and collaboration features
 
