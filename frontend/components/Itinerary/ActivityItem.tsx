@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Button from '../UI/Button'
 import ActivityNotes from './ActivityNotes'
+import ActivityReminder from './ActivityReminder'
 import { formatCoordinates } from '../../services/maps'
 import type { Activity } from '../../services/itinerary'
 
@@ -103,11 +104,17 @@ export default function ActivityItem({ activity, onBook }: ActivityItemProps) {
               {activity.location.coordinates[0]}, {activity.location.coordinates[1]}
             </p>
           </div>
-          <div>
+          <div className="space-y-3">
             <ActivityNotes
               activityId={(activity as any).id || activity.name}
               initialNotes={savedNotes}
               onSave={(notes) => setSavedNotes(notes)}
+            />
+            <ActivityReminder
+              activityId={(activity as any).id || activity.name}
+              activityName={activity.name}
+              startTime={activity.startTime}
+              date={(activity as any).date || new Date().toISOString().split('T')[0]}
             />
           </div>
         </div>

@@ -6,8 +6,10 @@ import { useItinerary } from '../../../hooks/useItinerary'
 import DaySchedule from '../../../components/Itinerary/DaySchedule'
 import ShareItinerary from '../../../components/Itinerary/ShareItinerary'
 import ExportItinerary from '../../../components/Itinerary/ExportItinerary'
+import { useState } from 'react'
 import FavoriteButton from '../../../components/Itinerary/FavoriteButton'
 import CostBreakdown from '../../../components/Itinerary/CostBreakdown'
+import ItineraryAdjustModal from '../../../components/Itinerary/ItineraryAdjustModal'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -15,7 +17,8 @@ import { formatCoordinates } from '../../../services/maps'
 export default function ItineraryDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const { itinerary, loading, error } = useItinerary(params.id as string)
+  const { itinerary, loading, error, reload } = useItinerary(params.id as string)
+  const [showAdjustModal, setShowAdjustModal] = useState(false)
 
   if (loading) {
     return (
@@ -75,6 +78,13 @@ export default function ItineraryDetailPage() {
             </div>
             <div className="flex gap-2 flex-wrap items-center">
               <FavoriteButton itineraryId={itinerary.id} />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowAdjustModal(true)}
+              >
+                🔄 Adjust Plan
+              </Button>
               <ShareItinerary itineraryId={itinerary.id} title={itinerary.title} />
               <ExportItinerary itinerary={itinerary} />
               <Link href={`/itinerary/${itinerary.id}/print`} target="_blank">
@@ -114,6 +124,17 @@ export default function ItineraryDetailPage() {
             </div>
           </div>
         </div>
+
+        {showAdjustModal && (
+          <ItineraryAdjustModal
+            itineraryId={itinerary.id}
+            onClose={() => setShowAdjustModal(false)}
+            onSuccess={() => {
+              reload?.()
+              setShowAdjustModal(false)
+            }}
+          />
+        )}
       </div>
     </main>
   )

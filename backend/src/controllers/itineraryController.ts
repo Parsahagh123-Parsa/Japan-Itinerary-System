@@ -136,5 +136,24 @@ export const itineraryController = {
       })
     }
   },
+
+  /**
+   * Get itinerary statistics
+   */
+  async getStatistics(req: AuthenticatedRequest, res: Response) {
+    try {
+      const userId = req.user!.id
+
+      const statistics = await itineraryService.getStatistics(userId)
+
+      res.json({ statistics })
+    } catch (error: any) {
+      console.error('Error fetching statistics:', error)
+      res.status(500).json({
+        error: 'Failed to fetch statistics',
+        message: error.message,
+      })
+    }
+  },
 }
 
