@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import ActivityItem from './ActivityItem'
 import BookingModal from '../Booking/BookingModal'
+import WeatherWidget from '../Weather/WeatherWidget'
 import type { DaySchedule as DayScheduleType, Activity } from '../../services/itinerary'
 
 interface DayScheduleProps {
@@ -25,15 +26,36 @@ export default function DaySchedule({ day, onBookingSuccess }: DayScheduleProps)
     }
   }
 
+  // Get coordinates from first activity for weather
+  const coordinates =
+    day.activities.length > 0
+      ? day.activities[0].location.coordinates
+      : undefined
+
+  // Get city name from first activity location
+  const city =
+    day.activities.length > 0 ? day.activities[0].location.name : ''
+
   return (
     <div className="bg-white rounded-card shadow-sm p-6 mb-6">
       <div className="border-b border-gray-200 pb-4 mb-4">
-        <h3 className="text-xl font-semibold text-gray-900">
-          Day {day.day}
-        </h3>
-        <p className="text-sm text-gray-600 mt-1">
-          {format(date, 'EEEE, MMMM d, yyyy')}
-        </p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900">
+              Day {day.day}
+            </h3>
+            <p className="text-sm text-gray-600 mt-1">
+              {format(date, 'EEEE, MMMM d, yyyy')}
+            </p>
+          </div>
+          {coordinates && (
+            <WeatherWidget
+              city={city}
+              date={day.date}
+              coordinates={coordinates}
+            />
+          )}
+        </div>
       </div>
 
       <div className="space-y-4">

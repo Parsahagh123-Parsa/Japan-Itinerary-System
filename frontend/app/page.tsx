@@ -9,6 +9,8 @@ import Button from '../components/UI/Button'
 import Input from '../components/UI/Input'
 import { ItineraryCardSkeleton } from '../components/UI/LoadingSkeleton'
 import { useToast } from '../components/UI/ToastContainer'
+import QuickActions from '../components/Dashboard/QuickActions'
+import StatsCard from '../components/Dashboard/StatsCard'
 import { deleteItinerary } from '../services/itinerary'
 import type { Itinerary } from '../services/itinerary'
 
@@ -51,6 +53,17 @@ export default function Home() {
     new Set(itineraries.flatMap((it: Itinerary) => it.cities))
   ).sort()
 
+  // Calculate statistics
+  const totalDays = itineraries.reduce((sum, it) => {
+    const start = new Date(it.startDate)
+    const end = new Date(it.endDate)
+    const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1
+    return sum + days
+  }, 0)
+
+  const totalCost = itineraries.reduce((sum, it) => sum + (it.totalCost || 0), 0)
+  const uniqueCitiesCount = uniqueCities.length
+
   return (
     <main className="min-h-screen p-8 bg-gray-50">
       <div className="max-w-6xl mx-auto">
@@ -65,6 +78,29 @@ export default function Home() {
             <Button size="lg">Create New Itinerary</Button>
           </Link>
         </div>
+
+        {!loading && itineraries.length > 0 && (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <StatsCard
+                title="Total Itineraries"
+                value={itineraries.length}
+                icon="📋"
+              />
+              <StatsCard
+                title="Total Days Planned"
+                value={totalDays}
+                icon="📅"
+              />
+              <StatsCard
+                title="Cities Visited"
+                value={uniqueCitiesCount}
+                icon="🏙️"
+              />
+            </div>
+            <QuickActions />
+          </>
+        )}
 
         {!loading && itineraries.length > 0 && (
           <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">

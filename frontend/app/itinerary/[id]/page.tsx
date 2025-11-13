@@ -6,6 +6,7 @@ import { useItinerary } from '../../../hooks/useItinerary'
 import DaySchedule from '../../../components/Itinerary/DaySchedule'
 import ShareItinerary from '../../../components/Itinerary/ShareItinerary'
 import ExportItinerary from '../../../components/Itinerary/ExportItinerary'
+import FavoriteButton from '../../../components/Itinerary/FavoriteButton'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -71,7 +72,8 @@ export default function ItineraryDetailPage() {
                 </p>
               )}
             </div>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap items-center">
+              <FavoriteButton itineraryId={itinerary.id} />
               <ShareItinerary itineraryId={itinerary.id} title={itinerary.title} />
               <ExportItinerary itinerary={itinerary} />
               {itinerary.days.length > 0 && itinerary.days[0].activities.length > 0 && (
