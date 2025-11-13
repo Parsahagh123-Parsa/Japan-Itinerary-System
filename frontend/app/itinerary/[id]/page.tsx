@@ -12,6 +12,7 @@ import CostBreakdown from '../../../components/Itinerary/CostBreakdown'
 import ItineraryAdjustModal from '../../../components/Itinerary/ItineraryAdjustModal'
 import TimelineView from '../../../components/Itinerary/TimelineView'
 import MapView from '../../../components/Itinerary/MapView'
+import ExpenseTracker from '../../../components/Expense/ExpenseTracker'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -174,6 +175,7 @@ export default function ItineraryDetailPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-4 space-y-6">
               <CostBreakdown itinerary={itinerary} />
+              <ExpenseTracker itineraryId={itinerary.id} />
             </div>
           </div>
         </div>

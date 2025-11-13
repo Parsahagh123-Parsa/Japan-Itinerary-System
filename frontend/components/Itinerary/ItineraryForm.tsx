@@ -24,13 +24,38 @@ export default function ItineraryForm() {
   const router = useRouter()
   const { createItinerary, loading, error } = useItinerary()
   
-  const [formData, setFormData] = useState<ItineraryRequest>({
-    startDate: '',
-    endDate: '',
-    cities: [],
-    interests: [],
-    budget: 'moderate',
-    travelStyle: 'moderate',
+  const [formData, setFormData] = useState<ItineraryRequest>(() => {
+    if (initialData) {
+      // Calculate dates if duration is provided
+      let startDate = initialData.startDate || ''
+      let endDate = initialData.endDate || ''
+      
+      if (initialData.duration && !startDate) {
+        const start = new Date()
+        startDate = start.toISOString().split('T')[0]
+        const end = new Date(start)
+        end.setDate(end.getDate() + (initialData.duration - 1))
+        endDate = end.toISOString().split('T')[0]
+      }
+      
+      return {
+        startDate,
+        endDate,
+        cities: initialData.cities || [],
+        interests: initialData.interests || [],
+        budget: initialData.budget || 'moderate',
+        travelStyle: initialData.travelStyle || 'moderate',
+      }
+    }
+    
+    return {
+      startDate: '',
+      endDate: '',
+      cities: [],
+      interests: [],
+      budget: 'moderate',
+      travelStyle: 'moderate',
+    }
   })
   
   const [cityInput, setCityInput] = useState('')
