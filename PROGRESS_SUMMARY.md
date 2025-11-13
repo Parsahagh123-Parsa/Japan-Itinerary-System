@@ -132,4 +132,7 @@
 - ✅ Emergency information and contacts
 - ✅ Essential Japanese language helper with pronunciation
 - ✅ Ryokan (traditional inn) guide and booking information
+- ✅ Photography spots guide with equipment recommendations
+- ✅ Comprehensive shopping guide (electronics, fashion, anime, traditional)
+- ✅ Nightlife guide (bars, clubs, izakaya, karaoke, jazz, rooftop)
 
