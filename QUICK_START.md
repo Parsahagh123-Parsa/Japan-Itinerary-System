@@ -103,9 +103,9 @@ vercel --prod
 2. Go to [vercel.com](https://vercel.com)
 3. Click "Add New Project"
 4. Import your GitHub repo
-5. Configure:
-   - **Root Directory:** `frontend`
-   - **Framework:** Next.js (auto-detected)
+5. **IMPORTANT:** Configure:
+   - **Root Directory:** `frontend` ⚠️ **Set this in project settings!**
+   - **Framework:** Next.js (auto-detected from `frontend/vercel.json`)
 6. Add environment variables in Vercel dashboard
 7. Deploy!
 

@@ -124,12 +124,10 @@ Visit: **http://localhost:3000**
    - Go to [vercel.com](https://vercel.com)
    - Click "Add New Project"
    - Import your GitHub repository
-   - Configure:
-     - **Framework Preset:** Next.js
-     - **Root Directory:** `frontend`
-     - **Build Command:** `npm run build`
-     - **Output Directory:** `.next`
-     - **Install Command:** `npm install`
+   - **IMPORTANT:** Configure:
+     - **Framework Preset:** Next.js (auto-detected)
+     - **Root Directory:** `frontend` ⚠️ **This is critical!**
+     - Build settings will auto-detect from `frontend/vercel.json`
 
 3. **Add Environment Variables** (same as above)
 
