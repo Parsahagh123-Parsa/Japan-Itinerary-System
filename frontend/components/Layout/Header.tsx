@@ -66,6 +66,9 @@ export default function Header() {
                 <Link href="/itinerary/create">
                   <Button variant="primary">Create Itinerary</Button>
                 </Link>
+                <Link href="/profile">
+                  <Button variant="ghost">Profile</Button>
+                </Link>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-600">{user.email}</span>
                   <Button variant="ghost" size="sm" onClick={handleLogout}>

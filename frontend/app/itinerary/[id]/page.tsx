@@ -82,7 +82,13 @@ export default function ItineraryDetailPage() {
 
         <div className="space-y-6">
           {itinerary.days.map((day) => (
-            <DaySchedule key={day.day} day={day} />
+            <DaySchedule
+              key={day.day}
+              day={day}
+              onBookingSuccess={() => {
+                // Could show a success message or refresh data
+              }}
+            />
           ))}
         </div>
       </div>

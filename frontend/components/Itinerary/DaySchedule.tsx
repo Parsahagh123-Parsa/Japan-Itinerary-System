@@ -1,14 +1,29 @@
 'use client'
 
+import { useState } from 'react'
 import { format } from 'date-fns'
-import type { DaySchedule as DayScheduleType } from '../../services/itinerary'
+import ActivityItem from './ActivityItem'
+import BookingModal from '../Booking/BookingModal'
+import type { DaySchedule as DayScheduleType, Activity } from '../../services/itinerary'
 
 interface DayScheduleProps {
   day: DayScheduleType
+  onBookingSuccess?: () => void
 }
 
-export default function DaySchedule({ day }: DayScheduleProps) {
+export default function DaySchedule({ day, onBookingSuccess }: DayScheduleProps) {
   const date = new Date(day.date)
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null)
+
+  const handleBook = (activity: Activity) => {
+    setSelectedActivity(activity)
+  }
+
+  const handleBookingSuccess = () => {
+    if (onBookingSuccess) {
+      onBookingSuccess()
+    }
+  }
 
   return (
     <div className="bg-white rounded-card shadow-sm p-6 mb-6">
@@ -23,34 +38,21 @@ export default function DaySchedule({ day }: DayScheduleProps) {
 
       <div className="space-y-4">
         {day.activities.map((activity, index) => (
-          <div
+          <ActivityItem
             key={index}
-            className="flex gap-4 pb-4 border-b border-gray-100 last:border-0 last:pb-0"
-          >
-            <div className="flex-shrink-0 w-24 text-sm text-gray-600">
-              <div className="font-medium">{activity.startTime}</div>
-              <div className="text-xs">{activity.endTime}</div>
-            </div>
-            <div className="flex-1">
-              <h4 className="font-semibold text-gray-900 mb-1">
-                {activity.name}
-              </h4>
-              <p className="text-sm text-gray-600 mb-2">
-                {activity.location.name}
-              </p>
-              <p className="text-xs text-gray-500 mb-2">
-                {activity.location.address}
-              </p>
-              {activity.notes && (
-                <p className="text-sm text-gray-700 italic">{activity.notes}</p>
-              )}
-              <span className="inline-block mt-2 px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
-                {activity.type}
-              </span>
-            </div>
-          </div>
+            activity={activity}
+            onBook={handleBook}
+          />
         ))}
       </div>
+
+      {selectedActivity && (
+        <BookingModal
+          activity={selectedActivity}
+          onClose={() => setSelectedActivity(null)}
+          onSuccess={handleBookingSuccess}
+        />
+      )}
     </div>
   )
 }
