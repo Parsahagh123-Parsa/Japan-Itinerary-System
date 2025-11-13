@@ -12,6 +12,7 @@ export interface Booking {
   bookingType: string
   externalId?: string
   status: 'pending' | 'confirmed' | 'cancelled'
+  bookingDetails?: Record<string, any>
   bookedAt: string
 }
 
@@ -63,5 +64,12 @@ export async function bookActivity(
 export async function getUserBookings(): Promise<Booking[]> {
   const response = await api.get<{ bookings: Booking[] }>('/bookings')
   return response.data.bookings
+}
+
+/**
+ * Cancel a booking
+ */
+export async function cancelBooking(id: string): Promise<void> {
+  await api.put(`/bookings/${id}/cancel`)
 }
 

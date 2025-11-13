@@ -81,5 +81,25 @@ export const bookingController = {
       })
     }
   },
+
+  /**
+   * Cancel a booking
+   */
+  async cancelBooking(req: AuthenticatedRequest, res: Response) {
+    try {
+      const userId = req.user!.id
+      const { id } = req.params
+
+      await bookingService.cancelBooking(userId, id)
+
+      res.json({ message: 'Booking cancelled successfully' })
+    } catch (error: any) {
+      console.error('Error cancelling booking:', error)
+      res.status(500).json({
+        error: 'Failed to cancel booking',
+        message: error.message,
+      })
+    }
+  },
 }
 

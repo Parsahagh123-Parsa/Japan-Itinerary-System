@@ -54,6 +54,12 @@ export default function Header() {
                 <Link href="/map">
                   <Button variant="ghost">Map</Button>
                 </Link>
+                <Link href="/bookings">
+                  <Button variant="ghost">Bookings</Button>
+                </Link>
+                <Link href="/translate">
+                  <Button variant="ghost">Translate</Button>
+                </Link>
                 <Link href="/itinerary/create">
                   <Button variant="primary">Create Itinerary</Button>
                 </Link>

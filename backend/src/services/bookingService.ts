@@ -13,6 +13,7 @@ export interface Booking {
   bookingType: string
   externalId?: string
   status: 'pending' | 'confirmed' | 'cancelled'
+  bookingDetails?: Record<string, any>
   bookedAt: string
 }
 
@@ -32,6 +33,7 @@ export const bookingService = {
         booking_type: 'hotel',
         external_id: data.externalId,
         status: 'pending',
+        booking_details: data.bookingDetails || {},
       })
       .select()
       .single()
@@ -47,6 +49,7 @@ export const bookingService = {
       bookingType: booking.booking_type,
       externalId: booking.external_id,
       status: booking.status,
+      bookingDetails: booking.booking_details,
       bookedAt: booking.booked_at,
     }
   },
@@ -65,6 +68,7 @@ export const bookingService = {
         booking_type: 'restaurant',
         external_id: data.externalId,
         status: 'pending',
+        booking_details: data.bookingDetails || {},
       })
       .select()
       .single()
@@ -80,6 +84,7 @@ export const bookingService = {
       bookingType: booking.booking_type,
       externalId: booking.external_id,
       status: booking.status,
+      bookingDetails: booking.booking_details,
       bookedAt: booking.booked_at,
     }
   },
@@ -98,6 +103,7 @@ export const bookingService = {
         booking_type: 'activity',
         external_id: data.externalId,
         status: 'pending',
+        booking_details: data.bookingDetails || {},
       })
       .select()
       .single()
@@ -113,6 +119,7 @@ export const bookingService = {
       bookingType: booking.booking_type,
       externalId: booking.external_id,
       status: booking.status,
+      bookingDetails: booking.booking_details,
       bookedAt: booking.booked_at,
     }
   },
@@ -139,9 +146,25 @@ export const bookingService = {
         bookingType: booking.booking_type,
         externalId: booking.external_id,
         status: booking.status,
+        bookingDetails: booking.booking_details,
         bookedAt: booking.booked_at,
       })) || []
     )
+  },
+
+  /**
+   * Cancel a booking
+   */
+  async cancelBooking(userId: string, bookingId: string): Promise<void> {
+    const { error } = await supabase
+      .from('bookings')
+      .update({ status: 'cancelled' })
+      .eq('id', bookingId)
+      .eq('user_id', userId)
+
+    if (error) {
+      throw new Error(`Failed to cancel booking: ${error.message}`)
+    }
   },
 }
 

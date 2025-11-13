@@ -19,5 +19,8 @@ router.post('/activity', bookingController.bookActivity)
 // Get user's bookings
 router.get('/', bookingController.getUserBookings)
 
+// Cancel a booking
+router.put('/:id/cancel', bookingController.cancelBooking)
+
 export default router
 
