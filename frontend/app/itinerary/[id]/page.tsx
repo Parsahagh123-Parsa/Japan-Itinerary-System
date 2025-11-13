@@ -76,6 +76,11 @@ export default function ItineraryDetailPage() {
               <FavoriteButton itineraryId={itinerary.id} />
               <ShareItinerary itineraryId={itinerary.id} title={itinerary.title} />
               <ExportItinerary itinerary={itinerary} />
+              <Link href={`/itinerary/${itinerary.id}/print`} target="_blank">
+                <Button variant="outline" size="sm">
+                  🖨️ Print
+                </Button>
+              </Link>
               {itinerary.days.length > 0 && itinerary.days[0].activities.length > 0 && (
                 <Link
                   href={`/map?from=${formatCoordinates(

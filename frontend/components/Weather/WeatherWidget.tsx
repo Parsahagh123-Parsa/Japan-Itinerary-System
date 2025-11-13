@@ -33,11 +33,10 @@ export default function WeatherWidget({
       }
 
       try {
-        // Using OpenWeatherMap API (free tier)
-        // In production, this should be done via backend to protect API key
+        // Using Next.js API route which proxies to backend
         const [lat, lng] = coordinates
         const response = await fetch(
-          `/api/weather?lat=${lat}&lon=${lng}&date=${date}`
+          `/api/weather?lat=${lat}&lon=${lng}${date ? `&date=${date}` : ''}`
         )
 
         if (!response.ok) {
@@ -45,7 +44,7 @@ export default function WeatherWidget({
         }
 
         const data = await response.json()
-        setWeather(data)
+        setWeather(data.weather)
       } catch (err: any) {
         setError(err.message || 'Weather unavailable')
       } finally {
