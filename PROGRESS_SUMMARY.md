@@ -118,4 +118,14 @@
 - ✅ City insights with travel tips and highlights
 - ✅ Quick add activity feature for fast itinerary building
 - ✅ Location-aware features foundation (Japan-focused)
+- ✅ Hidden gems and secret spots discovery
+- ✅ Cultural experiences (tea ceremony, calligraphy, kimono, etc.)
+- ✅ Seasonal events and festivals guide
+- ✅ Onsen (hot springs) guide with etiquette
+- ✅ Regional food specialties guide
+- ✅ Anime and manga culture spots
+- ✅ Comprehensive cultural etiquette guide
+- ✅ Activity recommendations engine
+- ✅ Itinerary statistics and analytics
+- ✅ Time optimization for efficient routing
 
