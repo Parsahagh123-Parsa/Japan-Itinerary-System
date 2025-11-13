@@ -113,4 +113,9 @@
 - ✅ Offline mode detection and indicator
 - ✅ Itinerary tagging system with suggested tags
 - ✅ Enhanced search and filtering capabilities
+- ✅ Location detection for GPS-based city identification
+- ✅ Nearby places recommendations based on location
+- ✅ City insights with travel tips and highlights
+- ✅ Quick add activity feature for fast itinerary building
+- ✅ Location-aware features foundation (Japan-focused)
 
