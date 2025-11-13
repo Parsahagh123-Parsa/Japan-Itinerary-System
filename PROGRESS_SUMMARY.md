@@ -94,4 +94,11 @@
 - ✅ Tooltip component for help text
 - ✅ Recent activity feed on dashboard
 - ✅ Enhanced dashboard layout
+- ✅ Timeline view for itinerary visualization
+- ✅ Map view showing all itinerary locations
+- ✅ View mode switcher (schedule/timeline/map)
+- ✅ Itinerary adjustment modal with reasons
+- ✅ Activity reminders functionality
+- ✅ Standalone booking creation page
+- ✅ Enhanced booking management UI
 
