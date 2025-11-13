@@ -14,6 +14,7 @@ import EmptyState from '../components/UI/EmptyState'
 import QuickActions from '../components/Dashboard/QuickActions'
 import StatsCard from '../components/Dashboard/StatsCard'
 import RecentActivity from '../components/Dashboard/RecentActivity'
+import AdvancedSearch from '../components/Search/AdvancedSearch'
 import { deleteItinerary } from '../services/itinerary'
 import type { Itinerary } from '../services/itinerary'
 
@@ -23,6 +24,8 @@ export default function Home() {
   const { itineraries, loading, error, reload } = useUserItineraries()
   const [searchQuery, setSearchQuery] = useState('')
   const [filterCity, setFilterCity] = useState('')
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
+  const [displayedItineraries, setDisplayedItineraries] = useState<Itinerary[]>([])
   const [deleteConfirm, setDeleteConfirm] = useState<{
     isOpen: boolean
     itineraryId: string | null
@@ -59,7 +62,10 @@ export default function Home() {
   }
 
   // Filter and search itineraries
-  const filteredItineraries = itineraries.filter((itinerary: Itinerary) => {
+  const filteredItineraries = (displayedItineraries.length > 0 && showAdvancedSearch
+    ? displayedItineraries
+    : itineraries
+  ).filter((itinerary: Itinerary) => {
     const matchesSearch =
       searchQuery === '' ||
       itinerary.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -72,6 +78,11 @@ export default function Home() {
 
     return matchesSearch && matchesCity
   })
+
+  const handleAdvancedSearch = (results: Itinerary[]) => {
+    setDisplayedItineraries(results)
+    setShowAdvancedSearch(true)
+  }
 
   // Get unique cities from all itineraries
   const uniqueCities = Array.from(
@@ -135,24 +146,40 @@ export default function Home() {
         )}
 
         {!loading && itineraries.length > 0 && (
-          <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              placeholder="Search itineraries..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <select
-              value={filterCity}
-              onChange={(e) => setFilterCity(e.target.value)}
-              className="px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <option value="">All Cities</option>
-              {uniqueCities.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
+          <div className="mb-6 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                placeholder="Search itineraries..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <div className="flex gap-2">
+                <select
+                  value={filterCity}
+                  onChange={(e) => setFilterCity(e.target.value)}
+                  className="flex-1 px-4 py-2 border rounded-button focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="">All Cities</option>
+                  {uniqueCities.map((city) => (
+                    <option key={city} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </select>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
+                >
+                  {showAdvancedSearch ? 'Hide' : 'Advanced'} Search
+                </Button>
+              </div>
+            </div>
+            {showAdvancedSearch && (
+              <AdvancedSearch
+                itineraries={itineraries}
+                onSearch={handleAdvancedSearch}
+              />
+            )}
           </div>
         )}
 

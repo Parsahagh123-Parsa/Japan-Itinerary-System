@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '../components/Layout/Header'
 import { ToastProvider } from '../components/UI/ToastContainer'
 import { ErrorBoundary } from '../components/ErrorBoundary'
+import OfflineIndicator from '../components/UI/OfflineIndicator'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           <ToastProvider>
             <Header />
             {children}
+            <OfflineIndicator />
           </ToastProvider>
         </ErrorBoundary>
       </body>

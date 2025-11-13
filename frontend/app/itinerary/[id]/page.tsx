@@ -15,6 +15,7 @@ import MapView from '../../../components/Itinerary/MapView'
 import ExpenseTracker from '../../../components/Expense/ExpenseTracker'
 import CalendarExport from '../../../components/Calendar/CalendarExport'
 import CollaborateModal from '../../../components/Itinerary/CollaborateModal'
+import ItineraryTags from '../../../components/Itinerary/ItineraryTags'
 import Button from '../../../components/UI/Button'
 import { DayScheduleSkeleton } from '../../../components/UI/LoadingSkeleton'
 import { formatCoordinates } from '../../../services/maps'
@@ -84,6 +85,19 @@ export default function ItineraryDetailPage() {
                   Estimated cost: ¥{itinerary.totalCost.toLocaleString()}
                 </p>
               )}
+              {itinerary.description && (
+                <p className="text-gray-600 mt-2">{itinerary.description}</p>
+              )}
+              <div className="mt-4">
+                <ItineraryTags
+                  itineraryId={itinerary.id}
+                  tags={itinerary.tags || []}
+                  onUpdate={(tags) => {
+                    // In production, this would update the itinerary in the database
+                    console.log('Tags updated:', tags)
+                  }}
+                />
+              </div>
             </div>
             <div className="flex gap-2 flex-wrap items-center">
               <FavoriteButton itineraryId={itinerary.id} />

@@ -38,6 +38,8 @@ export interface Itinerary {
   days: DaySchedule[]
   totalCost?: number
   createdAt: string
+  description?: string
+  tags?: string[]
 }
 
 /**
