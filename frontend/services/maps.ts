@@ -45,9 +45,13 @@ export interface ARLandmark {
 /**
  * Get route data for Mapbox visualization
  */
-export async function getRoute(request: RouteRequest): Promise<Route> {
+export async function getRoute(
+  from: string,
+  to: string,
+  mode: 'walking' | 'transit' | 'driving' = 'walking'
+): Promise<Route> {
   const response = await api.get<{ route: Route }>('/maps/route', {
-    params: request,
+    params: { from, to, mode },
   })
   return response.data.route
 }
@@ -56,11 +60,26 @@ export async function getRoute(request: RouteRequest): Promise<Route> {
  * Get AR overlay data for WebXR
  */
 export async function getAROverlay(
-  coordinates: [number, number]
+  coordinates: string
 ): Promise<AROverlay> {
   const response = await api.get<{ overlay: AROverlay }>('/maps/ar-overlay', {
     params: { coordinates },
   })
   return response.data.overlay
+}
+
+/**
+ * Format coordinates as string (lng,lat)
+ */
+export function formatCoordinates(lng: number, lat: number): string {
+  return `${lng},${lat}`
+}
+
+/**
+ * Parse coordinates from string
+ */
+export function parseCoordinates(coords: string): [number, number] {
+  const [lng, lat] = coords.split(',').map(Number)
+  return [lng, lat]
 }
 
