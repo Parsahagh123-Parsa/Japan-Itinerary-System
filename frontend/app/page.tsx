@@ -13,6 +13,7 @@ import ConfirmDialog from '../components/UI/ConfirmDialog'
 import EmptyState from '../components/UI/EmptyState'
 import QuickActions from '../components/Dashboard/QuickActions'
 import StatsCard from '../components/Dashboard/StatsCard'
+import RecentActivity from '../components/Dashboard/RecentActivity'
 import { deleteItinerary } from '../services/itinerary'
 import type { Itinerary } from '../services/itinerary'
 
@@ -122,7 +123,14 @@ export default function Home() {
                 icon="🏙️"
               />
             </div>
-            <QuickActions />
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+              <div className="lg:col-span-3">
+                <QuickActions />
+              </div>
+              <div className="lg:col-span-1">
+                <RecentActivity />
+              </div>
+            </div>
           </>
         )}
 
