@@ -216,7 +216,7 @@ export default function HiddenGems({ city, onAddToItinerary }: HiddenGemsProps) 
                 <p className="text-sm text-gray-600 mb-2">{gem.description}</p>
                 <div className="bg-yellow-50 border border-yellow-200 rounded p-2 mb-2">
                   <p className="text-xs font-medium text-yellow-800">
-                    💡 Why it's hidden: {gem.whyHidden}
+                    💡 Why it&apos;s hidden: {gem.whyHidden}
                   </p>
                 </div>
                 <div className="text-xs text-gray-600 space-y-1 mb-2">

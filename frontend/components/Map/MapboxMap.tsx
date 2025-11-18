@@ -61,6 +61,7 @@ export default function MapboxMap({
         map.current = null
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Update route when it changes

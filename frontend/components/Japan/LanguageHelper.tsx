@@ -177,7 +177,7 @@ export default function LanguageHelper({ onPhraseSelect }: LanguageHelperProps) 
 
       <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
         <p className="text-xs text-blue-800">
-          💡 Tip: Even basic Japanese phrases are greatly appreciated by locals. Don't worry about perfect pronunciation!
+          💡 Tip: Even basic Japanese phrases are greatly appreciated by locals. Don&apos;t worry about perfect pronunciation!
         </p>
       </div>
 
