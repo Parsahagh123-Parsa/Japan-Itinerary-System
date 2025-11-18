@@ -31,12 +31,18 @@ export default function ExpenseTracker({ itineraryId }: ExpenseTrackerProps) {
   const { showToast } = useToast()
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [showForm, setShowForm] = useState(false)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    date: string
+    category: string
+    description: string
+    amount: string
+    currency: 'JPY' | 'USD' | 'EUR'
+  }>({
     date: new Date().toISOString().split('T')[0],
     category: 'Other',
     description: '',
     amount: '',
-    currency: 'JPY' as const,
+    currency: 'JPY',
   })
 
   useEffect(() => {
